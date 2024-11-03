@@ -1,0 +1,34 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Upload JAR to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          tag: ${{ github.sha }}
+          files: target/show-my-coordinates-*.jar
+          name: show-my-coordinates-${{ github.sha }}.jar
+          body: |
+            Release for commit `${{ github.sha }}`
+            Commit message: `${{ github.event.head_commit.message }}`
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
