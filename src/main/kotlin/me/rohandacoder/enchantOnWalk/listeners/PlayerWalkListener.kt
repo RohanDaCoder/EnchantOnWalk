@@ -22,17 +22,28 @@ class PlayerWalkListener(private val plugin: EnchantOnWalk) : Listener {
         val player = event.player
         val currentLocation = player.location.toVector()
 
-        if (lastLocations[player] != currentLocation) {
+        if (hasMovedWholeBlock(player, currentLocation)) {
             enchantItem(player)
             lastLocations[player] = currentLocation
         }
+    }
+
+    private fun hasMovedWholeBlock(player: Player, currentLocation: Vector): Boolean {
+        val lastLocation = lastLocations[player]
+        if (lastLocation == null) {
+            lastLocations[player] = currentLocation
+            return false
+        }
+        return (currentLocation.x.toInt() != lastLocation.x.toInt() ||
+                currentLocation.y.toInt() != lastLocation.y.toInt() ||
+                currentLocation.z.toInt() != lastLocation.z.toInt())
     }
 
     private fun enchantItem(player: Player) {
         player.inventory.contents.forEach { item ->
             if (item?.type?.isAir?.not() == true) {
                 val randomEnchantment = Enchantment.values().random()
-                val removeSilkTouch = plugin.config.getBoolean("removeSilkTouch", false)
+                val removeSilkTouch = plugin.config.getBoolean("removeSilkTouch", true)
                 if (removeSilkTouch && randomEnchantment == Enchantment.SILK_TOUCH) return
 
                 val meta = item.itemMeta ?: return
