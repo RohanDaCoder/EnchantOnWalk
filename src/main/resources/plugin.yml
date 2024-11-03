@@ -1,0 +1,27 @@
+name: EnchantOnWalk
+version: '1.0'
+main: me.rohandacoder.enchantOnWalk.EnchantOnWalk
+api-version: '1.20'
+
+commands:
+  ping:
+    description: "Replies with 'Pong!'."
+    usage: /ping
+
+  start:
+    description: "Starts the enchanting game."
+    usage: /start
+    permission: enchantonwalk.admin
+    aliases: [ enchantstart, enchantgamestart, enchantwalkstart, enchantonwalkstart ]
+
+  stop:
+    description: "Stops the enchanting game."
+    usage: /stop
+    permission: enchantonwalk.admin
+    aliases: [ enchantstop, enchantgameend, enchantwalkstop, enchantonwalkstop ]
+
+  reload:
+    description: "Reloads the plugin configuration."
+    usage: /reload
+    permission: enchantonwalk.reload
+    aliases: [ enchantreload, enchantconfigreload, enchantgamereload, enchantonwalkreload ]
